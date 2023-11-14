@@ -32,23 +32,18 @@ char *_strcpy(char *dest, char *src)
 
 char *_strdup(const char *str)
 {
+	char *ret;
+	int length = 0;
+
 	if (str == NULL)
-	return (NULL);
-
-	size_t length = 0;
-	const char *temp = str;
-
-	while (*temp++)
-	length++;
-
-	char *ret = malloc((length + 1) * sizeof(char));
-
+		return (NULL);
+	while (*str++)
+		length++;
+	ret = malloc(sizeof(char) * (length + 1));
 	if (!ret)
-	return (NULL);
-
-	for (size_t i = 0; i <= length; i++)
-	ret[i] = str[i];
-
+		return (NULL);
+	for (length++; length--;)
+		ret[length] = *--str;
 	return (ret);
 }
 

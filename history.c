@@ -9,22 +9,17 @@
 
 char *get_history_file(info_t *info)
 {
-	char *dir = _getenv(info, "HOME=");
-		if (!dir)
-	{
-		return (NULL);
-	}
-	size_t buf_size = _strlen(dir) + _strlen(HIST_FILE) + 2;
-		char *buf = malloc(sizeof(char) * buf_size);
+	char *buf, *dir;
 
+	dir = _getenv(info, "HOME+");
+	if (!dir)
+		return (NULL);
+	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
 	if (!buf)
-	{
 		return (NULL);
-	}
-
-		buf[0] = '\0';
+			buf[0] = 0;
 	_strcpy(buf, dir);
-	_strcat(buf, PATH_SEPARATOR);
+	_strcat(buf, "/");
 	_strcat(buf, HIST_FILE);
 
 		return (buf);
@@ -69,7 +64,7 @@ int write_history(info_t *info)
 
 int read_history(info_t *info)
 {
-	int i, last = 0, linecount = 0;
+	int x, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
 	char *buf = NULL, *filename = get_history_file(info);
@@ -93,14 +88,14 @@ int read_history(info_t *info)
 	if (rdlen <= 0)
 		return (free(buf), 0);
 	close(fd);
-	for (i = 0; i < fsize; i++)
-		if (buf[i] == '\n')
+	for (x = 0; x < fsize; x++)
+		if (buf[x] == '\n')
 		{
-			buf[i] = 0;
+			buf[x] = 0;
 			build_history_list(info, buf + last, linecount++);
-			last = i + 1;
+			last = x + 1;
 		}
-	if (last != i)
+	if (last != x)
 		build_history_list(info, buf + last, linecount++);
 	free(buf);
 	info->histcount = linecount;

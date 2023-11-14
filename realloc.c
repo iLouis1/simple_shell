@@ -24,19 +24,12 @@ char *_memset(char *s, char b, unsigned int n)
 
 void ffree(char **pp)
 {
-	if (!pp)
-	{
-		return;
-	}
-
 	char **temp = pp;
 
-	while
-		(*pp)
-	{
+	if (!pp)
+		return;
+	while (*pp)
 		free(*pp++);
-	}
-
 	free(temp);
 }
 
